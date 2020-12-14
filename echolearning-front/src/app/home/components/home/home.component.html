@@ -1,3 +1,104 @@
+<mat-card class="userCard">
+  <mat-card-header>
+    <mat-card-title>Administracion de usuarios</mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <h2>{{ selectedUser.idUsuario === 0 ? "crear" : "editar" }} usuario</h2>
+  <form
+    [formGroup]="usuarioForm"
+    role="form"
+    fxFill
+    (ngSubmit)="enviarUsuarioForm()"
+  >
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center">
+      <div fxLayout="row">
+        <mat-form-field appearance="legacy">
+          <mat-label>nombres</mat-label>
+          <input formControlName="nombres" matInput type="text" />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row">
+        <mat-form-field appearance="legacy">
+          <mat-label>apellidos</mat-label>
+          <input formControlName="apellidos" matInput type="text" />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row">
+        <mat-form-field appearance="legacy">
+          <mat-label>email</mat-label>
+          <input formControlName="email" matInput type="email" />
+        </mat-form-field>
+      </div>
+      <div fxLayout="row">
+        <button
+          mat-raised-button
+          type="submit"
+          class="actionTableButtons"
+          color="primary"
+        >
+          {{ selectedUser.idUsuario === 0 ? "crear" : "editar" }}
+        </button>
+        <button
+          mat-raised-button
+          *ngIf="selectedUser.idUsuario !== 0"
+          (click)="clearForm()"
+        >
+          cancelar
+        </button>
+      </div>
+    </div>
+  </form>
+  <mat-divider></mat-divider>
+  <div>
+    <table mat-table [dataSource]="users$ | async" class="mat-elevation-z8">
+      <!-- Position Column -->
+      <ng-container matColumnDef="nombres">
+        <th mat-header-cell *matHeaderCellDef>nombres</th>
+        <td mat-cell *matCellDef="let element">{{ element.nombres }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="apellidos">
+        <th mat-header-cell *matHeaderCellDef>apellidos</th>
+        <td mat-cell *matCellDef="let element">{{ element.apellidos }}</td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>acciones</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-mini-fab
+            color="primary"
+            class="actionTableButtons"
+            (click)="editUser(element)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            color="warn"
+            class="actionTableButtons"
+            (click)="deleteUser(element)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <mat-divider></mat-divider>
+</mat-card>
+
 <mat-form-field appearance="outline">
   <mat-label>Outline form field</mat-label>
   <input matInput placeholder="Placeholder" />
